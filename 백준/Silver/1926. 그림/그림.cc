@@ -28,8 +28,8 @@ int main(void) {
 			
 			count++;
 			queue<pair<int, int> > Q;
-			vis[i][j] = 1;
 			Q.push({ i, j });
+			vis[i][j] = 1;
 			int area = 0;
 			while (!Q.empty()) {
 				area++;
@@ -39,8 +39,8 @@ int main(void) {
 					int ny = cur.Y + dy[dir];
 					if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
 					if (vis[nx][ny] || board[nx][ny] != 1) continue;
-					vis[nx][ny] = 1;
 					Q.push({ nx,ny });
+					vis[nx][ny] = 1;
 				}
 			}
 			s = max(s, area);
