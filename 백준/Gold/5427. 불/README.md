@@ -39,3 +39,20 @@
 
  <p>각 테스트 케이스마다 빌딩을 탈출하는데 가장 빠른 시간을 출력한다. 빌딩을 탈출할 수 없는 경우에는 "IMPOSSIBLE"을 출력한다.</p>
 
+### 내가 틀린 이유
+<p>입력:
+1
+3 3
+###
+#@#
+#.#
+
+정답:
+2
+
+출력:
+IMPOSSIBLE</p>
+
+![image](https://github.com/csh-scl/https-github.com-csh-scl-cautious-spork/assets/140063021/acf5f570-5e41-4f2e-88af-f5a16f2e98bb)
+
+#
