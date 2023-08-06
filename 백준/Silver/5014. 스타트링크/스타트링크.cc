@@ -19,11 +19,11 @@ int main(void) {
 	while (!q.empty()) {
 		int cur = q.front();
 		q.pop();
-		for (auto k : { cur+ d, cur - e }) {
-			if (k > a || k <= 0 || val[k] == 1) continue;
-			tower[k] = tower[cur] + 1;
-			val[k] = true;
-			q.push(k);
+		for (auto k : { d, -e }) {
+			if (cur + k > a || cur + k <= 0 || val[cur + k] == 1) continue;
+			tower[cur + k] = tower[cur] + 1;
+			val[cur + k] = true;
+			q.push(cur + k);
 		}
 	}
 	if (val[c] != 0) cout << tower[c];
