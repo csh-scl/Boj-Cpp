@@ -24,7 +24,7 @@ int main() {
 
         for (int i = 0; i < a; i++) {
             for (int j = 0; j < b; j++) {
-                fill(val[i][j], val[i][j] + c, -1); // Initialize val with -1
+                fill(val[i][j], val[i][j] + c, 0); // Initialize val with 0
             }
         }
 
@@ -57,7 +57,7 @@ int main() {
                 if (nh < 0 || nh >= a || nx < 0 || nx >= b || ny < 0 || ny >= c)
                     continue;
 
-                if (val[nh][nx][ny] >= 0 || board[nh][nx][ny] == '#')
+                if (val[nh][nx][ny] > 0 || board[nh][nx][ny] == '#')
                     continue;
 
                 q.push({nh, nx, ny});
