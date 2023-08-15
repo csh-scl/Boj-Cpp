@@ -6,7 +6,7 @@ void print(int x, int y, int n) {
 		cout << ' ';
 	}
 	else {
-		if (n / 3 == 0) {
+		if (n==1) {
 			cout << '*';
 		}
 		else {
