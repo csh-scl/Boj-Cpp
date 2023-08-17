@@ -15,12 +15,11 @@ void func(int k) {
 		cout << '\n';
 		return;
 	}
-
-	for (int i = 1; i <= n; i++) {
+	int st = 1;
+	if (k != 0) st = arr[k - 1] + 1;
+	for (int i = st; i <= n; i++) {
 		if (!state[i]) {
-			if (k >= 1) {
-				if (arr[k - 1] > i) continue;
-			}
+			
 			arr[k] = i;
 			state[i] = 1;
 			func(k + 1);
