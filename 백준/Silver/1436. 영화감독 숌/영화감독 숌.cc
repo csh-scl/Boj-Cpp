@@ -1,39 +1,31 @@
 #include<iostream>
 using namespace std;
 
-int N, ans = 0, cnt = 0;
+int N, ans, cnt, temp;
 
-bool hasThreeSixes(int num) {
-    if (num == 0) {
-        return false;
-    }
-    
-    if (num % 1000 == 666) {
-        return true;
-    }
-    
-    return hasThreeSixes(num / 10);
-}
+int main()
+{
 
-void findNthEndOfTheWorld(int currentNum) {
-    if (cnt == N) {
-        return;
-    }
-    
-    if (hasThreeSixes(currentNum)) {
-        cnt++;
-    }
-    
-    ans = currentNum;
-    findNthEndOfTheWorld(currentNum + 1);
-}
+	cin >> N;
 
-int main() {
-    cin >> N;
-    
-    findNthEndOfTheWorld(1);
-    
-    cout << ans << endl;
-    
-    return 0;
+	ans = 0; // 영화 제목
+	cnt = 0; // 현재 몇번쨰 종말의 수인지
+
+	while (cnt != N)
+	{
+		ans++;
+		temp = ans;
+
+		// 수에 6이 적어도 3개이상 들어가는지 판별
+		while (temp != 0)
+		{
+			if (temp % 1000 == 666) // 종말의 숫자라면
+			{
+				cnt++;
+				break;
+			}
+			else temp /= 10; // 일의 자리수 삭제
+		}
+	}
+	cout << ans;
 }
