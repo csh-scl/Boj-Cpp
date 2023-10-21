@@ -10,7 +10,7 @@ int size3;
 void bysearch(string k, int st, int en) {
 	if (st > en) return;
 	int m = (st + en) / 2;
-	if (m > size3-1) return;
+
 	if (sentence[m] == k) {
 		incre++;
 		return;
@@ -40,7 +40,7 @@ int main(void){
 	for (int i = 0; i < m; i++) {
 		string vec;
 		cin >> vec;
-		bysearch(vec,0, size3);
+		bysearch(vec,0, size3-1);
 	}
 	cout << incre;
 } 
