@@ -25,7 +25,7 @@ int bfs(int st) { // st의 점수 계산
         }
     }
     int val = *max_element(dist + 1, dist + n + 1); // 가장 거리가 먼 사람
-    if (val == 0) return 100; // 친구가 아예 없으면 val은 0이 됨
+    if (val == 0) return 0; // 친구가 아예 없으면 val은 0이 됨
     return val;
 }
 
