@@ -1,45 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+const int MXN = 4000002;
+vector<bool> seive(MXN, true);
+vector<int> primes;
 int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  
+  for(int i=2; i*i<MXN; i++){
+    if (!seive[i]) continue;
+    for (int j = i * i; j < MXN; j += i) 
+      seive[j] = false;
+  }
+  for (int i = 2; i < MXN; i++) if (seive[i]) primes.push_back(i);
+  primes.push_back(0);
 
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	int n;
-	cin >> n;
-	if (n == 1) cout << 0;
-	else {
-		vector<int> prime(n + 1, false);
-		prime[0] = true;
-		prime[1] = true;
-		for (int i = 2; i * i <= n; i++) {
-			for (int j = i * i; j <= n; j += i) {
-				prime[j] = true;
-			}
-		}
-
-		vector<int> result;
-		for (int i = 2; i <= n; i++) {
-			if (prime[i]) continue;
-			result.push_back(i);
-		}
-
-		//for (auto k : result) cout << k << ' ';
-		int sz = result.size();
-		int count = 0;
-		int en = 0;
-		int sum = result[0];
-
-		for (int i = 0; i < sz; i++) {
-			while (en < sz && sum < n) {
-				en++;
-				if (en != sz) sum += result[en];
-			}
-			if (en == sz) break;
-			if (sum == n) count++;
-			sum -= result[i];
-		}
-
-		cout << count;
-	}
+  int target, s = 0, e = 1, ans = 0, tmpSum = primes[0];
+  cin >> target;
+  while (1) {
+    if (tmpSum == target) ans++;
+    if (tmpSum <= target) tmpSum += primes[e++];
+    if (target < tmpSum) tmpSum -= primes[s++];
+    if (e == int(primes.size())) break;
+  }
+  cout << ans;
 }
