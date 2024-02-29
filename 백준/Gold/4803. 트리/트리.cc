@@ -4,6 +4,7 @@ using namespace std;
 vector<int> adj[502];
 int vis[502] = {0};
 
+bool isTrue = true;
 
 int dn = 1;
 
@@ -16,26 +17,17 @@ void setNode(int n, int e) {
 	}
 }
 
-bool dfs(int k) {
-	bool isTrue = true;
-	queue<int> q;
-	q.push(k);
-	vis[k] = -1;
-	while (!q.empty()) {
-		int cur = q.front();
-		q.pop();
-		for (auto k : adj[cur]) {
-
-			if (vis[cur] == k) continue;
-			if (vis[k] != 0) isTrue = false;
-			else {
-				q.push(k);
-				vis[k] = cur;
-			}
+void dfs(int v, int parent) {
+	
+	for (auto k : adj[v]) {
+		if (k ==  parent) continue;
+		if (vis[k] != 0) {
+			isTrue = false;
+			continue;
 		}
+		vis[k] = parent;
+		dfs(k, v);
 	}
-
-	return isTrue;
 }
 
 
@@ -51,14 +43,14 @@ int main(void) {
 		cin >> x >> y;
 		if (x == 0 && y == 0) break;
 		
-		
-
 		int cnt = 0;
 		setNode(x, y);
 
 		for (int i = 1; i <= x; i++) {
 			if (vis[i]) continue;
-			if (dfs(i) == true) cnt++;
+			isTrue = true;
+			dfs(i, -1);
+			if (isTrue) cnt++;
 		}
 
 
