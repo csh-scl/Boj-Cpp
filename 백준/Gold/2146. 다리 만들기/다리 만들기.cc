@@ -27,11 +27,11 @@ void bfs(int x, int y, int cnt) {
             int nx = cur.first + dx[i];
             int ny = cur.second + dy[i];
             if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
+            if (dist[nx][ny] > 0) continue;
             if (board[nx][ny] == 0) {
                 edge = true;
                 continue;
             }
-            if (dist[nx][ny] > 0) continue;
             dist[nx][ny] = cnt;
             q.push({ nx,ny });
         }
