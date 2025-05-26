@@ -23,7 +23,7 @@ int main() {
         }
     }
     int cnt = 0;
-    for (auto pair : ms) {
+    for (auto &pair : ms) {
         if (pair.second == true) {
             cnt++;
         }
