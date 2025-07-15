@@ -1,12 +1,14 @@
 #include <bits/stdc++.h>
+#include <unordered_map>
 using namespace std;
 
+pair<int, int> k[3000003];
 
 int main() {
     ios::sync_with_stdio(false); // 입출력 속도 향상
     cin.tie(0); // cin과 cout의 묶음 해제
-
-    multimap<int, int> k;
+    
+    
     multiset<int> cr;
     int n, m;
     cin >> n >> m;
@@ -14,8 +16,12 @@ int main() {
     for (int i = 0; i < n; i++) {
         int x, y;
         cin >> y >> x;
-        k.insert({ x,y });
+        k[i].first = x;
+        k[i].second = y;
     }
+
+    sort(k, k + n);
+
 
     for (int i = 0; i < m; i++) {
         int val;
@@ -23,20 +29,13 @@ int main() {
         cr.insert(val);
     }
 
-    while (!cr.empty() && !k.empty()) {
+    for (int i = n - 1; i>=0; i--) {
         int v, w;
-        v = (*k.rbegin()).first;
-        w = (*k.rbegin()).second;
-
+        tie(v, w) = k[i];
         auto iter = cr.lower_bound(w);
-        if (iter == cr.end()) {
-            k.erase(prev(k.end()));
-            continue;
-        }
+        if (iter == cr.end()) continue;
         cr.erase(iter);
         ans += v;
-
-        k.erase(prev(k.end()));
     }
 
     cout << ans;
