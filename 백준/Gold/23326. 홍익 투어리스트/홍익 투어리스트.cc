@@ -1,85 +1,60 @@
 #include <bits/stdc++.h>
+#include <unordered_set>
 using namespace std;
 
+set<int> pl;
 
-int main(void) {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	set<int> check; // 명소가 무엇인지 판단해 주는 곳
-	set<pair<int, bool>> st; // 명소 인지 아닌지 저장하는 곳
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
 
-	int n, t;
-	cin >> n >> t;
-	for (int i = 1; i <= n; i++) {
-		int x;
-		cin >> x;
-		if (x == 1) {
-			st.insert({ i, true });
-			check.insert(i);
-		}
-		else {
-			st.insert({ i, false });
-		}
-	}
-	int pos = 1;
+    int n, m;
+    cin >> n >> m;
 
+    int now = 1;
 
-	while (t--) {
-		int num;
-		cin >> num;
-		/* cout << "현재 위치는 " << pos << "입니다" << "\n"; */
-		if (num == 1) {
-			int x;
-			cin >> x;
-			// 못 찾은 경우
-			if(check.find(x) == check.end()) {
-				auto it = st.find({x, false});
-				pair<int, bool> temp = {x, true};
-				st.erase(it);
-				st.insert(temp);
-				check.insert(x);
-			}
-			// 찾은 경우
-			else {
-				auto it = st.find({ x, true});
-				pair<int, bool> temp = { x, false};
-				st.erase(it);
-				st.insert(temp);
-				check.erase(x);
-			}
-		}
-		else if (num == 2) {
-			int x;
-			cin >> x;
-			if (pos + x > n) {
-				if ((pos + x) % n == 0) pos = n;
-				else
-					pos = (pos + x) % n;
-			}
-			else
-				pos += x;
-		}
-		else {
-			if (check.empty()) {
-				cout << -1 << '\n';
-			}
-			else {
-				auto it = check.lower_bound(pos);
+    for (int i = 1; i <= n; i++) {
+        int val;
+        cin >> val;
+        if (val == 1) pl.insert(i);
+    }
 
-				int diff;
-
-				if (it != check.end()) {
-					diff = *it - pos;
-				}
-				else {
-					diff = n - pos + *check.begin();
-				}
-			
-				cout << diff << '\n';
-			}
-		}
-	}
-
-
-	
+    for (int i = 0; i < m; i++) {
+        int val;
+        cin >> val;
+        if (val == 1) {
+            int tar;
+            cin >> tar;
+            if (pl.find(tar) != pl.end()) {
+                pl.erase(tar);
+            }
+            else {
+                pl.insert(tar);
+            }
+        }
+        else if (val == 2) {
+            int move;
+            cin >> move;
+            int result = now + move;
+            if (result % n == 0) {
+                now = n;
+            }
+            else {
+                now = (now + move) % n;
+            }
+        }
+        else if (val == 3) {
+            int ans = -1;
+            if (!pl.empty()) {
+                auto it = pl.lower_bound(now);
+                if (it != pl.end()) {
+                    ans = *it - now;
+                }
+                else {
+                    ans = *pl.begin() + n - now;
+                }
+            }
+            cout << ans << '\n';
+        }
+    }
 }
