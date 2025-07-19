@@ -1,41 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-multiset<int> st;
+struct cmp {
+    bool operator()(int a, int b) {
+        return a > b;
+    }
+};
 
-int main(void) {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
 
-	int n;
-	cin >> n;
-	n--;
-	
-	int x;
-	cin >> x;
-	st.insert(x);
-	auto cur = st.begin();
-	cout << *cur << '\n';
+    priority_queue<int, vector<int>, cmp> minheap;
+    priority_queue<int> maxheap;
 
-	while (n--) {
-		int val;
-		cin >> val;
-		st.insert(val);
-		if (st.size() % 2 == 0 && val >= *cur) {
-			cout << *cur << '\n';
-		}
-		else if (st.size() % 2 == 0 && val < *cur) {
-			cur--;
-			cout << *cur << '\n';
-		}
-		else if (st.size() % 2 == 1 && val < *cur) {
-			cout << *cur << '\n';
-		}
-		else {
-			cur++;
-			cout << *cur << '\n';
-		}
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        int val;
+        cin >> val;
+        if (maxheap.size() <= minheap.size()) {
+            maxheap.push(val);
+        }
+        else {
+            minheap.push(val);
+        }
 
-	}
-	
+        if (!minheap.empty() && maxheap.top() > minheap.top()) {
+            maxheap.push(minheap.top());
+            minheap.pop();
+            minheap.push(maxheap.top());
+            maxheap.pop();
+        }
+        cout << maxheap.top() << '\n';  
+    }
+    
 }
