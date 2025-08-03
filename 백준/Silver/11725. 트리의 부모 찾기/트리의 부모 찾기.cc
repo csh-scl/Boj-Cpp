@@ -1,44 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dp[100002];
+
+int p[100002];
 vector<int> adj[100002];
 
-
-
-void bfs(int n) {
-	queue<int> q;
-	q.push(n);
-	while (!q.empty()) {
-		int cur = q.front();
-		q.pop();
-		for (auto k : adj[cur]) {
-			if (dp[cur] == k) continue;
-			q.push(k);
-			dp[k] = cur;
-		}
-	}
+void dfs(int cur) {
+    for (auto nxt : adj[cur]) {
+        if (p[cur] == nxt) continue;
+        p[nxt] = cur;
+        dfs(nxt);
+    }
 }
 
-int main(void) {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
 
+    int n;
+    cin >> n;
 
-	int num;
-	cin >> num;
-	for (int i = 0; i < num-1; i++) {
-		int x, y;
-		cin >> x >> y;
-		adj[x].push_back(y);
-		adj[y].push_back(x);
-	}
+    for (int i = 0; i < n-1; i++) {
+        int x, y;
+        cin >> x >> y;
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+    }
 
-	bfs(1);
-
-	for (int i = 2; i <= num; i++) {
-		cout << dp[i] << '\n';
-	}
+    dfs(1);
+    for (int i = 2; i <= n; i++) cout << p[i] << '\n';
 }
-
-
