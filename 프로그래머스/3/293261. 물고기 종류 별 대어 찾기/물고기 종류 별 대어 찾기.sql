@@ -1,0 +1,9 @@
+-- 코드를 작성해주세요
+SELECT ID, FISH_NAME, LENGTH
+FROM FISH_NAME_INFO as fni
+JOIN 
+(SELECT *, RANK() OVER (partition by fi.FISH_TYPE ORDER BY fi.LENGTH DESC) as rnk
+FROM FISH_INFO as fi) as fb
+ON fni.FISH_TYPE = fb.FISH_TYPE
+WHERE rnk = 1
+ORDER BY ID ASC
