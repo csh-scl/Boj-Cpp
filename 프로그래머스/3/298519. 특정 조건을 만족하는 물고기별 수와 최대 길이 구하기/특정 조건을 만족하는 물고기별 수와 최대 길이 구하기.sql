@@ -5,6 +5,7 @@ GROUP BY FISH_TYPE
 HAVING AVG(
     CASE 
         WHEN LENGTH <= 10 THEN 10
+        WHEN LENGTH is null THEN 10
         ELSE LENGTH 
     END
 ) >= 33
