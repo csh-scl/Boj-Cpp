@@ -1,0 +1,9 @@
+-- 코드를 입력하세요
+SELECT YEAR(sales_date) as YEAR, MONTH(sales_date) as MONTH, GENDER, count(DISTINCT us.USER_ID) as USERS
+FROM USER_INFO as us
+JOIN (SELECT * FROM ONLINE_SALE
+WHERE YEAR(SALES_DATE) = '2022') as os
+ON us.USER_ID = os.USER_ID
+WHERE GENDER is not null
+GROUP BY month(SALES_DATE), gender 
+ORDER BY YEAR, MONTH, GENDER
