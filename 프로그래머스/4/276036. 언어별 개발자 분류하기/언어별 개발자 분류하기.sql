@@ -1,0 +1,18 @@
+-- 코드를 작성해주세요
+WITH CTE as (SELECT
+    (SELECT SUM(CODE) FROM SKILLCODES WHERE CATEGORY = 'Front End') as FrontEnd,
+    (SELECT SUM(CODE) FROM SKILLCODES WHERE NAME = 'Python') as Python,
+    (SELECT SUM(CODE) FROM SKILLCODES WHERE NAME = 'C#') as 'C_val')
+
+
+SELECT GRADE, ID, EMAIL FROM (
+SELECT ID, EMAIL,
+CASE 
+    WHEN (SKILL_CODE & CTE.FrontEnd != 0) and (SKILL_CODE & Python != 0) THEN 'A'
+    WHEN (SKILL_CODE & C_val != 0) THEN 'B' 
+    WHEN (SKILL_CODE & CTE.FrontEnd != 0) THEN 'C' 
+    ELSE 'dismatch'
+END AS GRADE
+FROM DEVELOPERS, CTE) as cnt
+WHERE GRADE NOT IN ('dismatch')
+ORDER BY GRADE, ID
