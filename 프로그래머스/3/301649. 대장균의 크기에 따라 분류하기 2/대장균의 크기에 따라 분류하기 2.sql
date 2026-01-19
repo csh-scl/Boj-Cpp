@@ -1,0 +1,14 @@
+-- 코드를 작성해주세요
+WITH CTE as(
+    SELECT ID, ntile(4) over(ORDER BY SIZE_OF_COLONY DESC) as rnk
+    FROM ECOLI_DATA
+)
+
+SELECT ID, CASE 
+    WHEN rnk = 1 THEN 'CRITICAL'
+    WHEN rnk = 2 THEN 'HIGH'
+    WHEN rnk =3 THEN 'MEDIUM'
+    ELSE 'LOW'
+END AS COLONY_NAME
+FROM CTE
+ORDER BY ID
