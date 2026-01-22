@@ -8,24 +8,20 @@ vector<int> solution(vector<int> prices) {
     vector<int> answer(prices.size(), 0);
     stack<pair<int,int>> s;    // 값, 인덱스
     
-    for(int i = 0; i<prices.size(); i++){
-    
-        while(!s.empty() && s.top().first > prices[i]){
-            int idx = s.top().first;
-            int val = s.top().second;
-            
-            answer[val] = i - val;
+    int size = prices.size() - 1; // 5
+    for(int i = 0; i<= size; i++){
+        
+        while(!s.empty() && prices[i] < s.top().first){
+            int idx = s.top().second;
+            answer[idx] = i-idx;
             s.pop();
         }
-        
-        s.push({prices[i],i});
+         s.push({prices[i], i});
     }
     
     while(!s.empty()){
-        int idx = s.top().first;
-        int val = s.top().second;
-        
-        answer[val] = prices.size() - val - 1;
+        int cur = s.top().second;
+        answer[cur] = size - cur;
         s.pop();
     }
     
