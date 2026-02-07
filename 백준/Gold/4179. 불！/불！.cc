@@ -1,96 +1,97 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define X first
-#define Y second
-int fire[1002][1002];
-char board[1002][1002]; 
-int val[1002][1002];
-// 이 토마토 문제는 BFS 각자 돌리면서 이동시키면서 채워주는 문제 이 친구는 한 놈의 한놈에게 영향을 주는 상황
-int dx[4] = { 1,0,-1,0 };
-int dy[4] = { 0,1,0,-1 };
+int dist[1002][1002];
+int jdist[1002][1002];
+string s[1002];
+bool vis[1002][1002];
+bool jvis[1002][1002];
+int n,m;
+
+int dx[4] = {0,1,0,-1};
+int dy[4] = {1,0,-1,0};
 
 int main(void) {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	int n,m;
-	cin >> n >> m;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cin >> board[i][j];
-		}
-	}
-	queue<pair<int, int>> q1;
-	queue<pair<int, int>> q2;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			if (board[i][j] == '#') continue;
-			else if (board[i][j] == 'J') {
-				val[i][j] = -1;
-			}
-			else if (board[i][j] == 'F') {
-				q1.push({ i,j });
-			}
-			else {
-				val[i][j] = -1;
-			}
-		}
-	} 
-	
-	while (!q1.empty()) {
-		pair<int, int> cur = q1.front();
-		q1.pop();
-		for (int dir = 0; dir < 4; dir++) {
-			int nx = cur.X + dx[dir];
-			int ny = cur.Y + dy[dir];
-			if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-			if (val[nx][ny] >= 0) continue;
-			val[nx][ny] = val[cur.X][cur.Y] + 1;
-			q1.push({ nx,ny });
-		}
-	}
+    cin >> n >> m; // n : 높이 m >> 밑변
 
+    for(int i =0; i<n; i++) {
+        cin >> s[i];
+    }
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			if (board[i][j] == '#') continue;
-			else if (board[i][j] == 'J') {
-				q2.push({ i,j });
-				continue;
-			}
-			else if (board[i][j] == 'F') {
-				continue;
-			}
-			else {
-				fire[i][j] = -1;
-			}
-		}
-	}
-	/*for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cout << val[i][j] << ' ';
-		}
-	}
-	cout << '\n';*/
-	
-	while (!q2.empty()) {
-		pair<int, int> cur = q2.front();
-		q2.pop();
-		for (int dir = 0; dir < 4; dir++) {
-			int nx = cur.X + dx[dir];
-			int ny = cur.Y + dy[dir];
-			if (nx < 0 || nx >= n || ny < 0 || ny >= m) {
-				cout << fire[cur.X][cur.Y] + 1;
-				return 0;
- 			}
-			if (fire[nx][ny] >= 0) continue;
-			if (val[nx][ny] != -1 &&  fire[cur.X][cur.Y] + 1 >= val[nx][ny]) continue;
-			q2.push({ nx, ny });
-			fire[nx][ny] = fire[cur.X][cur.Y] + 1;
-		}
-	}
+    queue<pair<int,int>> q; // 지훈
+    queue<pair<int,int>> fr; // 불
 
-	cout << "IMPOSSIBLE";
-	
+    for(int i = 0; i<n; i++) {
+        for(int j =0; j<m; j++) {
+            if(s[i][j] == 'J') {
+                q.push({i,j});
+                jvis[i][j] = true;
+            } else if(s[i][j] == 'F') {
+                fr.push({i,j});
+                vis[i][j] = true;
+            } else if(s[i][j] == '#') {
+                vis[i][j] = true;
+                jvis[i][j] = true;
+            } else {
+
+            }
+        }
+    }
+
+    while(!fr.empty()) {
+        auto cur = fr.front(); fr.pop();
+        for(int i =0; i<4; i++) {
+            int nx = cur.first + dx[i];
+            int ny = cur.second + dy[i];
+
+            if(nx < 0 || nx >= n  || ny <0 || ny>=m) continue;
+            if(s[nx][ny] == '#' || s[nx][ny] == 'J') continue;
+            if(s[nx][ny] == '.' && vis[nx][ny] == 0) {
+                fr.push({nx, ny});
+                dist[nx][ny] = dist[cur.first][cur.second] + 1;
+                vis[nx][ny] = true;
+            }
+        }
+    }
+
+    // for(int i =0; i<n; i++) {
+    //     for(int j =0; j<m; j++) {
+    //         cout << dist[i][j];
+    //     }
+    //     cout << '\n';
+    // }
+
+    while(!q.empty()) {
+        auto cur = q.front(); q.pop();
+        for(int i =0; i<4; i++) {
+            int nx = cur.first + dx[i];
+            int ny = cur.second + dy[i];
+
+            // 문제 코드
+            if(nx < 0 || nx >= n  || ny <0 || ny>=m) {
+                cout << jdist[cur.first][cur.second] + 1;
+                return 0;
+            }
+
+            if(s[nx][ny] == '#' || s[nx][ny] == 'F') continue;
+            if(jdist[cur.first][cur.second] + 1 >= dist[nx][ny] && dist[nx][ny] != 0) continue;
+
+            if(s[nx][ny] == '.' && jvis[nx][ny] == 0) {
+                q.push({nx, ny});
+                jdist[nx][ny] = jdist[cur.first][cur.second] + 1;
+                jvis[nx][ny] = true;
+            }
+        }
+    }
+    // cout << '\n' << '\n';
+    // for(int i =0; i<n; i++) {
+    //     for(int j =0; j<m; j++) {
+    //         cout << jdist[i][j];
+    //     }
+    //     cout << '\n';
+    // }
+    cout << "IMPOSSIBLE";
 }
